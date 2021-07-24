@@ -1,0 +1,35 @@
+version: "3"
+
+#NETWORK
+networks: 
+    my-network: 
+        driver: bridge
+
+#VOLUMES
+volumes: 
+    maria_volume:
+        driver: local
+        driver_opts:
+          o: bind
+          type: none
+          device: ./
+
+        
+
+#SERVICES
+services: 
+    my-mysql:
+        container_name: mysql-demo
+        image: "mysql:latest"
+        hostname: mysql
+        restart: always
+        networks: 
+            - my-network
+        volumes: 
+            - ./db:/var/lib/mysql
+            - ./my.cnf:/etc/mysql/my.cnf
+        environment: 
+            - MYSQL_ROOT_PASSWORD=123abc
+            - MYSQL_DATABASE=db_demo
+            - MYSQL_USER=siteuser
+            - MYSQL_PASSWORD=sitepassword
